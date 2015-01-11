@@ -178,8 +178,14 @@ namespace ofxCv {
 		if(patternType == CHESSBOARD) {
 			// no CV_CALIB_CB_FAST_CHECK, because it breaks on dark images (e.g., dark IR images from kinect)
 			int chessFlags = CV_CALIB_CB_ADAPTIVE_THRESH;// | CV_CALIB_CB_NORMALIZE_IMAGE;
-			found = findChessboardCorners(img, patternSize, pointBuf, chessFlags);
-			
+
+            try {
+                found = findChessboardCorners(img, patternSize, pointBuf, chessFlags);
+            } catch (const cv::Exception& exception) {
+                found = false;
+                ofLog(OF_LOG_ERROR, exception.msg);
+            }
+
 			// improve corner accuracy
 			if(found) {
 				if(img.type() != CV_8UC1) {
