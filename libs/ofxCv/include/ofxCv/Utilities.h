@@ -120,7 +120,11 @@ namespace ofxCv {
         }
     }
 	template <class T> inline int getChannels(ofPixels_<T>& pixels) {
-		return pixels.getNumChannels();
+        if (pixels.isAllocated()) {
+            return pixels.getNumChannels();
+        } else {
+            return 1;
+        }
 	}
 	template <class T> inline int getChannels(ofBaseHasPixels_<T>& img) {
 		return getChannels(img.getPixels());
